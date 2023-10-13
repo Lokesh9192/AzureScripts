@@ -1,0 +1,11 @@
+echo "Creating Resouce Group"
+az group create --name Lab --location eastus
+
+echo "Creating Vnet"
+az network vnet create -g Lab -n Vnet-1 --address-prefix 10.1.0.0/16 --subnet-name Subnet-1 --subnet-prefix 10.1.1.0/24 -l eastus
+
+echo "Creating Availabityset "
+az vm availability-set create -g Lab -n Avail-1
+
+echo "Creating Vm "
+az vm create -g Lab -n VM-1 --image UbuntuLTS --vnet-name Vnet-1 --subnet Subnet-1 --admin-username lokesh --admin-password "Lokeshreddy9192" --size Standard_B1s -l eastus --availability-set Avail-1 
