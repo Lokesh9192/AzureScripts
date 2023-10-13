@@ -1,0 +1,21 @@
+echo " Creating NSG"
+az network nsg create --resource-group Lab1 --name NSG1
+
+echo "Associating NSG to Vnet and Subnet"
+az network vnet subnet update --resource-group Lab1 --vnet-name VNet-1 --name Subnet-1 --network-security-group NSG1
+
+echo "Updating the Rules for NSG"
+az network nsg rule create --resource-group Lab1 --nsg-name VM-1NSG --name all-port --priority 300 --source-address-prefixes '*' --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges '*' --protocol '*' --description "Allow All"
+
+#echo "Deny all ports"
+#az network nsg rule create --resource-group Lab1 --nsg-name VM-1NSG --name Denyall --priority 200 --source-address-prefixes '*' --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges '*' --protocol '*' --access Deny --description "Deny All"
+
+#echo "Allow Specific port and Specific protocol"
+#az network nsg rule create --resource-group Lab1 --nsg-name VM-1NSG --name RDP-rule --priority 300 --destination-address-prefixes '*' --destination-port-ranges 3389 --protocol Tcp --description "Allow RDP"
+
+#echo "delete nsg rule"
+#az network nsg rule delete -g Lab1 --nsg-name VM-1NSG -n Denyall
+
+#echo " Creating OutBound rule"
+#az network nsg rule create -g Lab --nsg-name VM-1NSG --name AllowOutBoundHTTP --priority 100 --direction Outbound --source-address-prefixes '*' --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges 80 --access Allow --protocol '*' --description "Allow TCP"
+
