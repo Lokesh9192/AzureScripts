@@ -1,0 +1,20 @@
+echo "Creating ID for Vnet1"
+VNet1ID=$(az network vnet show --resource-group Lab1 --name Vnet-1 --query id --out tsv)
+
+echo "Creating ID for Vnet2"
+VNet2ID=$(az network vnet show --resource-group Lab2 --name Vnet-2 --query id --out tsv)
+
+echo "Creating ID for Vnet3"
+VNet3ID=$(az network vnet show --resource-group Lab3 --name Vnet-3 --query id --out tsv)
+
+echo" Creating peering for Vnet1-Vnet2 and Vnet2-Vnet1"
+az network vnet peering create -g Lab1 -n Vnet1-Vnet2 --vnet-name Vnet-1 --remote-vnet $VNet2ID --allow-vnet-access
+az network vnet peering create -g Lab2 -n Vnet2-Vnet1 --vnet-name Vnet-2 --remote-vnet $VNet1ID --allow-vnet-access
+
+echo" Creating peering for Vnet1-Vnet3 and Vnet3-Vnet1"
+az network vnet peering create -g Lab1 -n Vnet1-Vnet3 --vnet-name Vnet-1 --remote-vnet $VNet3ID --allow-vnet-access
+az network vnet peering create -g Lab3 -n Vnet3-Vnet1 --vnet-name Vnet-3 --remote-vnet $VNet1ID --allow-vnet-access
+
+echo" Creating peering for Vnet2-Vnet3 and Vnet3-Vnet2"
+az network vnet peering create -g Lab2 -n Vnet2-Vnet3 --vnet-name Vnet-2 --remote-vnet $VNet3ID --allow-vnet-access
+az network vnet peering create -g Lab3 -n Vnet3-Vnet2 --vnet-name Vnet-3 --remote-vnet $VNet2ID --allow-vnet-access
